@@ -222,11 +222,6 @@
    Projects Component Responsive Styling
    ------------------------------------------- */
 @media only screen and (max-width: 480px) {
-    .project-filters {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-    
     .projects-grid {
         grid-template-columns: 1fr;
     }

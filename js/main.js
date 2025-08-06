@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdowns = document.querySelectorAll('.dropdown');
         const scrollToTopBtn = document.getElementById('scrollToTop');
         const currentYearSpan = document.getElementById('current-year');
-        const projectFilters = document.querySelectorAll('.filter-button');
         const contactForm = document.getElementById('contactForm');
 
     // Set current year in footer
@@ -147,20 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.open(pdfPath, '_blank');
                 }
             }
-        });
-    });
-
-    // Project Filters
-    projectFilters.forEach(filter => {
-        filter.addEventListener('click', () => {
-            const filterValue = filter.getAttribute('data-filter');
-            projectFilters.forEach(f => f.classList.remove('active'));
-            filter.classList.add('active');
-            
-            const projectCards = document.querySelectorAll('#projects .project-card');
-            projectCards.forEach(card => {
-                card.style.display = (filterValue === 'all' || card.getAttribute('data-category') === filterValue) ? 'flex' : 'none';
-            });
         });
     });
 

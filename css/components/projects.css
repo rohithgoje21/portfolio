@@ -10,15 +10,6 @@
     position: relative; /* For positioning arrow container */
 }
 
-/* Project Filters */
-.project-filters {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem; /* Reduced margin as arrows take space */
-}
-
 .filter-button {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -63,13 +54,6 @@
     gap: 0; /* Remove grid gap, manage spacing with project-card margin */
     padding-bottom: 1.5rem; /* Ensure cards don't get cut off by wrapper padding */
 }
-
-/* Project Grid (was part of scroll-content, now just for card layout within flex items) */
-/* No longer a grid container itself when horizontal scroll is active by default */
-.projects-grid {
-    /* Styles that were here for grid layout are now on .scroll-content or .project-card */
-}
-
 
 /* Project Card - adjusted for horizontal layout */
 .project-card {
@@ -195,6 +179,10 @@
     color: var(--primary-color);
 }
 
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
+
 /* Project Note */
 .project-note {
     display: inline-flex;
@@ -278,42 +266,16 @@
         width: 290px; /* Even smaller cards */
     }
      .scroll-arrow-container {
-        /* Hide arrows on very small screens or adjust position significantly if needed */
-        /* display: none; */ 
-        /* Or adjust top to be less likely to overlap content */
         top: calc(50% + 50px); 
     }
 }
 
-/* Project Modal (local one, ensure it's scoped or removed if not used) */
-/* ... existing modal styles ... */
-/* Ensure these .modal- styles are specific if this modal is different from the global PDF modal */
-/* For example, by prefixing with .projects-section .modal- or similar */
-
-.projects .project-modal { /* Scoping example */
+.projects .project-modal { 
     display: none;
-    /* ... other styles ... */
 }
-
-.projects .modal-content { /* Scoping example */
-    /* ... other styles ... */
-}
-/* ... etc. for all project-specific modal styles ... */
-
-/* Removing old responsive grid styles as they are now handled by flexbox */
-/* @media screen and (max-width: 992px) { ... } */
-/* @media screen and (max-width: 768px) { ... } */
-/* @media screen and (max-width: 576px) { ... } */
-/* The flexbox .project-card width adjustments above handle responsiveness now. */
-/* Filters responsiveness is still valid. */
 
 /* Ensure the existing filter responsiveness for small screens is preserved */
 @media screen and (max-width: 576px) {
-    .project-filters {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-    }
     
     .filter-button {
         width: 100%;
