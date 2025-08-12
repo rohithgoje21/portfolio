@@ -228,11 +228,6 @@
 }
 
 /* -------------------------------------------
-   Publications Component Responsive Styling
-   ------------------------------------------- */
-/* Responsive styles now included directly in publications.css with a mobile-first approach */
-
-/* -------------------------------------------
    Certifications Component Responsive Styling
    ------------------------------------------- */
 @media only screen and (max-width: 480px) {
