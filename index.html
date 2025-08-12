@@ -20,11 +20,10 @@
     <link rel="stylesheet" href="css/components/certifications.css" />
     <link rel="stylesheet" href="css/components/education.css" />
     <link rel="stylesheet" href="css/components/achievements.css" />
+    <link rel="stylesheet" href="css/components/coding-profiles.css" />
     <link rel="stylesheet" href="css/components/skills.css" />
     <link rel="stylesheet" href="css/components/contact.css" />
     <link rel="stylesheet" href="css/components/footer.css" />
-    <link rel="stylesheet" href="css/components/custom-icons.css" />
-    <link rel="stylesheet" href="css/components/modal.css" />
     <link rel="stylesheet" href="css/responsive.css" />
 
     <!-- Font Awesome -->
@@ -46,9 +45,9 @@
     <div id="certifications"></div>
     <div id="education"></div>
     <div id="achievements"></div>
+    <div id="coding-profiles"></div>
     <div id="skills"></div>
     <div id="contact"></div>
-    <div id="modalContainer"></div>
     <div id="footer"></div>
 
     <!-- JavaScript -->
@@ -79,13 +78,13 @@
                     "#achievements",
                     "components/achievements.html"
                 ),
+                templateEngine.insertComponent(
+                    "#coding-profiles",
+                    "components/coding-profiles.html"
+                ),
                 templateEngine.insertComponent("#skills", "components/skills.html"),
                 templateEngine.insertComponent("#contact", "components/contact.html"),
                 templateEngine.insertComponent("#footer", "components/footer.html"),
-                templateEngine.insertComponent(
-                    "#modalContainer",
-                    "components/modal.html"
-                ),
             ]);
 
             // Initialize the site after components are loaded

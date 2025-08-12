@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Define a function that will be called after all components are loaded
     window.initSite = function() {
-        console.log('Initializing site functionality...');
         
         // DOM Elements - access these after components are loaded
         const body = document.querySelector('body');
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 body.classList.add('dark-theme');
                 localStorage.setItem('theme', 'dark');
             }
-            // console.log('Theme toggled. Current theme:', body.classList.contains('dark-theme') ? 'dark' : 'light');
         });
     }
 
@@ -135,20 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Resume PDF Preview/Download
-    const previewButtons = document.querySelectorAll('.btn-preview:not(.open-pdf-modal)');
-    previewButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            if (!btn.classList.contains('open-pdf-modal')) {
-                e.preventDefault();
-                const pdfPath = btn.getAttribute('href');
-                if (pdfPath && pdfPath !== '#') {
-                    window.open(pdfPath, '_blank');
-                }
-            }
-        });
-    });
-
     // Contact Form
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -184,56 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (submitBtn) submitBtn.disabled = false;
             });
         });
-    }
-
-    // PDF Modal Functionality
-    const modalOverlay = document.getElementById('pdfModalOverlay');
-    const pdfModal = document.getElementById('pdfModal');
-    const modalCloseBtn = pdfModal ? pdfModal.querySelector('.modal-close-btn') : null;
-    const pdfIframe = pdfModal ? pdfModal.querySelector('.modal-body iframe') : null;
-    const modalTitleEl = pdfModal ? pdfModal.querySelector('.modal-title') : null;
-    const pdfLinks = document.querySelectorAll('a.open-pdf-modal');
-
-    if (modalOverlay && pdfModal && modalCloseBtn && pdfIframe) {
-        const openModal = (pdfUrl, title) => {
-            if (pdfUrl) {
-                pdfIframe.setAttribute('src', pdfUrl);
-                if (modalTitleEl) modalTitleEl.textContent = title || 'Document Preview';
-                modalOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        };
-        const closeModal = () => {
-            modalOverlay.classList.remove('active');
-            pdfIframe.setAttribute('src', '');
-            document.body.style.overflow = '';
-        };
-        pdfLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pdfUrl = link.getAttribute('href');
-                const title = link.getAttribute('data-modal-title') || link.textContent.trim();
-                if (pdfUrl && pdfUrl !== '#') openModal(pdfUrl, title);
-                else console.warn('PDF link href is missing or invalid:', link);
-            });
-        });
-        modalCloseBtn.addEventListener('click', closeModal);
-        const modalOpenBtn = pdfModal.querySelector('.modal-open-btn');
-        if (modalOpenBtn) {
-            modalOpenBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const iframeSrc = pdfIframe.getAttribute('src');
-                if (iframeSrc) {
-                    window.open(iframeSrc, '_blank');
-                } else {
-                    console.warn('Iframe source is empty.');
-                }
-            });
-        }
-        modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && modalOverlay.classList.contains('active')) closeModal(); });
-    } else {
-        console.warn('Modal elements not found. PDF Modal functionality will not work.');
     }
 
     // Horizontal Scroll with Arrows Functionality
@@ -313,9 +247,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     setActiveLink();
     toggleScrollToTopBtn();
-    
-    console.log('Site initialization complete.');
     };
-    
-    // Note: initSite will be called by the component loader in index_new.html
 });
