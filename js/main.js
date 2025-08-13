@@ -1,5 +1,9 @@
 // Portfolio website functionality
 document.addEventListener('DOMContentLoaded', () => {
+    if (location.hash !== "#home") {
+        location.hash = "#home";
+    }
+    
     // Define a function that will be called after all components are loaded
     window.initSite = function() {
         
