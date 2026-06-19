@@ -162,45 +162,7 @@
     position: relative;
 }
 
-/* Creates a proper X with absolute positioning */
-@media screen and (max-width: 768px) {
-    .nav-toggle {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 30px;
-        height: 30px;
-        position: relative;
-        margin-right: 1rem;
-    }
-    
-    .nav-toggle .bar {
-        position: absolute;
-        transition: all 0.3s ease;
-        width: 30px;
-    }
-    
-    .nav-toggle .bar:nth-child(1) {
-        transform: translateY(-8px);
-    }
-    
-    .nav-toggle .bar:nth-child(3) {
-        transform: translateY(8px);
-    }
-    
-    .nav-toggle.active .bar:nth-child(1) {
-        transform: rotate(45deg);
-    }
-    
-    .nav-toggle.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .nav-toggle.active .bar:nth-child(3) {
-        transform: rotate(-45deg);
-    }
-}
+/* Mobile hamburger — handled in the full mobile block below */
 
 /* Theme toggle */
 .theme-toggle {
@@ -300,32 +262,34 @@ body.dark-theme #themeToggle .fa-sun {
         transition: all 0.25s ease-in-out;
     }
     
-    /* Set the three bars */
+    /* Three bars evenly spaced in a 26px container */
     .nav-toggle .bar:nth-child(1) {
         top: 4px;
+        transform: none;
     }
-    
+
     .nav-toggle .bar:nth-child(2) {
-        top: 6px;
+        top: 12px;
     }
-    
+
     .nav-toggle .bar:nth-child(3) {
-        top: 8px;
+        top: 20px;
+        transform: none;
     }
-    
-    /* Transform to X when active */
+
+    /* Animate to X when active — both outer bars meet at center (12px) */
     .nav-toggle.active .bar:nth-child(1) {
-        top: 6px;
+        top: 12px;
         transform: rotate(45deg);
     }
-    
+
     .nav-toggle.active .bar:nth-child(2) {
         opacity: 0;
         transform: translateX(-20px);
     }
-    
+
     .nav-toggle.active .bar:nth-child(3) {
-        top: 6px;
+        top: 12px;
         transform: rotate(-45deg);
     }
 

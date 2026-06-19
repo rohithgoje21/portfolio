@@ -5,17 +5,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Rohith's Portfolio</title>
+    <title>Rohith Goje | Full Stack Developer &amp; Competitive Programmer</title>
 
-    <link rel="icon" href="https://freepngimg.com/download/letter/130429-r-letter-free-transparent-image-hd.png" />
+    <meta name="description" content="Rohith Goje — Full Stack Developer and Competitive Programmer from India. Building real-time web apps with Node.js, React, and MongoDB." />
+    <meta name="keywords" content="Rohith Goje, Full Stack Developer, Competitive Programmer, Node.js, React, MongoDB, Portfolio, Software Developer, India, CMRIT, Nxzen" />
+    <meta name="author" content="Rohith Goje" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="canonical" href="https://rohithgoje21.github.io/portfolio/" />
+
+    <meta property="og:title" content="Rohith Goje | Full Stack Developer &amp; Competitive Programmer" />
+    <meta property="og:description" content="Full Stack Developer and Competitive Programmer from India. Projects include ChatApp, SendRetrieve, and AI Platforms." />
+    <meta property="og:image" content="https://rohithgoje21.github.io/portfolio/assets/images/RohithGoje.jpg" />
+    <meta property="og:url" content="https://rohithgoje21.github.io/portfolio/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rohith Goje Portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rohith Goje | Full Stack Developer" />
+    <meta name="twitter:description" content="Full Stack Developer &amp; Competitive Programmer from India." />
+    <meta name="twitter:image" content="https://rohithgoje21.github.io/portfolio/assets/images/RohithGoje.jpg" />
+
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml" />
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/components/header.css" />
     <link rel="stylesheet" href="css/components/hero.css" />
     <link rel="stylesheet" href="css/components/about.css" />
     <link rel="stylesheet" href="css/components/resume.css" />
+    <link rel="stylesheet" href="css/components/experience.css" />
     <link rel="stylesheet" href="css/components/projects.css" />
     <link rel="stylesheet" href="css/components/certifications.css" />
     <link rel="stylesheet" href="css/components/education.css" />
@@ -33,6 +52,33 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
         rel="stylesheet" />
+
+    <!-- Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Rohith Goje",
+      "url": "https://rohithgoje21.github.io/portfolio/",
+      "image": "https://rohithgoje21.github.io/portfolio/assets/images/RohithGoje.jpg",
+      "jobTitle": "Full Stack Developer",
+      "description": "Full Stack Developer and Competitive Programmer from India. Building real-time web apps with Node.js, React, and MongoDB.",
+      "email": "rohithgoje21@gmail.com",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "CMR Institute of Technology, Hyderabad"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Nxzen"
+      },
+      "knowsAbout": ["Node.js", "React", "MongoDB", "Express.js", "JavaScript", "Competitive Programming", "Full Stack Development"],
+      "sameAs": [
+        "https://www.linkedin.com/in/rohithgoje21/",
+        "https://github.com/rohithgoje21"
+      ]
+    }
+    </script>
 </head>
 
 <body class="light-theme">
@@ -41,6 +87,7 @@
     <div id="hero"></div>
     <div id="about"></div>
     <div id="resume"></div>
+    <div id="experience"></div>
     <div id="projects"></div>
     <div id="certifications"></div>
     <div id="education"></div>
@@ -62,6 +109,7 @@
                 templateEngine.insertComponent("#hero", "components/hero.html"),
                 templateEngine.insertComponent("#about", "components/about.html"),
                 templateEngine.insertComponent("#resume", "components/resume.html"),
+                templateEngine.insertComponent("#experience", "components/experience.html"),
                 templateEngine.insertComponent(
                     "#projects",
                     "components/projects.html"
@@ -87,10 +135,8 @@
                 templateEngine.insertComponent("#footer", "components/footer.html"),
             ]);
 
-            // Initialize the site after components are loaded
-            if (window.initSite) {
-                window.initSite();
-            }
+            // Signal main.js that all components are in the DOM
+            document.dispatchEvent(new CustomEvent('components:ready'));
         });
     </script>
 </body>

@@ -219,4 +219,36 @@
   right: -200px;
 }
 
+/* Form feedback messages */
+.form-success,
+.form-error {
+  padding: 1rem 1.25rem;
+  border-radius: var(--border-radius-md);
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.form-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #2e7d32;
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.form-error {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #c0392b;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+.dark-theme .form-success {
+  color: #81c784;
+  border-color: rgba(129, 199, 132, 0.4);
+}
+
+.dark-theme .form-error {
+  color: #e57373;
+  border-color: rgba(229, 115, 115, 0.4);
+}
+
 /* Responsive styles in responsive.css */

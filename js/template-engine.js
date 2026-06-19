@@ -27,7 +27,9 @@ class TemplateEngine {
             return html;
         } catch (error) {
             console.error(`Error loading component from ${path}:`, error);
-            return '';
+            return `<div style="padding:1.5rem;text-align:center;color:#e74c3c;border:1px dashed #e74c3c;border-radius:8px;margin:1rem 0;">
+                      Failed to load component. Please refresh the page.
+                    </div>`;
         }
     }
 

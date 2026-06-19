@@ -1,25 +1,17 @@
-// Portfolio website functionality
-document.addEventListener('DOMContentLoaded', () => {
-    if (location.hash !== "#home") {
-        location.hash = "#home";
-    }
-    
-    // Define a function that will be called after all components are loaded
-    window.initSite = function() {
-        
-        // DOM Elements - access these after components are loaded
-        const body = document.querySelector('body');
-        const themeToggle = document.getElementById('themeToggle');
-        const navToggle = document.getElementById('navToggle');
-        const navMenu = document.querySelector('.nav-menu');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-        const dropdowns = document.querySelectorAll('.dropdown');
-        const scrollToTopBtn = document.getElementById('scrollToTop');
-        const currentYearSpan = document.getElementById('current-year');
-        const contactForm = document.getElementById('contactForm');
+// Portfolio website functionality — initialises after all components are loaded
+document.addEventListener('components:ready', () => {
 
-    // Set current year in footer
+    const body = document.querySelector('body');
+    const themeToggle = document.getElementById('themeToggle');
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const dropdowns = document.querySelectorAll('.dropdown');
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    const currentYearSpan = document.getElementById('current-year');
+    const contactForm = document.getElementById('contactForm');
+
     if (currentYearSpan) {
         currentYearSpan.textContent = new Date().getFullYear();
     }
@@ -28,8 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        // Remove existing theme classes to start clean
+
         body.classList.remove('dark-theme', 'light-theme');
 
         if (savedTheme === 'dark') {
@@ -39,13 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (prefersDarkScheme) {
             body.classList.add('dark-theme');
         } else {
-            body.classList.add('light-theme'); // Default to light theme
+            body.classList.add('light-theme');
         }
     }
 
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
-            // Determine the new theme by checking if dark-theme is currently active *before* toggling
             const isCurrentlyDark = body.classList.contains('dark-theme');
             if (isCurrentlyDark) {
                 body.classList.remove('dark-theme');
@@ -68,39 +58,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Close mobile nav when clicking a link
+    function closeMobileNav() {
+        if (navToggle && navMenu && navMenu.classList.contains('active')) {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
     if (navLinks.length > 0) {
         navLinks.forEach(link => {
             if (!link.classList.contains('dropdown-toggle')) {
-                link.addEventListener('click', () => {
-                    if (navToggle && navMenu && navMenu.classList.contains('active')) {
-                        navToggle.classList.remove('active');
-                        navMenu.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
+                link.addEventListener('click', closeMobileNav);
             }
         });
     }
-    
-    // Handle dropdown toggles
+
+    // Dropdown items also close the mobile nav when tapped
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+            dropdowns.forEach(d => d.classList.remove('active'));
+            closeMobileNav();
+        });
+    });
+
+    // Dropdown toggles
     if (dropdownToggles.length > 0) {
         dropdownToggles.forEach(toggle => {
             toggle.addEventListener('click', (e) => {
                 e.preventDefault();
                 const dropdown = toggle.closest('.dropdown');
                 const isActive = dropdown.classList.contains('active');
-                
+
                 dropdowns.forEach(d => d.classList.remove('active'));
-                
+
                 if (!isActive || window.innerWidth > 768) {
                     dropdown.classList.toggle('active', !isActive);
                 }
             });
         });
     }
-    
-    // Close dropdowns when clicking outside
+
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.dropdown')) {
             dropdowns.forEach(dropdown => dropdown.classList.remove('active'));
@@ -110,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Active Navigation Link on Scroll
     function setActiveLink() {
         const sections = document.querySelectorAll('section[id]');
-        const scrollPosition = window.scrollY + 100; 
+        const scrollPosition = window.scrollY + 100;
 
         sections.forEach(section => {
             if (section.offsetTop <= scrollPosition && (section.offsetTop + section.offsetHeight) > scrollPosition) {
@@ -137,11 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Contact Form
+    // Contact Form — inline error message instead of alert()
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const oldMsg = contactForm.parentNode.querySelector('.form-success');
+            const oldMsg = contactForm.parentNode.querySelector('.form-success, .form-error');
             if (oldMsg) oldMsg.remove();
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.disabled = true;
@@ -164,9 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Form submission failed');
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Oops! There was a problem submitting your form. Please try again later.');
+            .catch(() => {
+                const errMsg = document.createElement('div');
+                errMsg.classList.add('form-error');
+                errMsg.textContent = 'Something went wrong. Please try again later.';
+                contactForm.parentNode.insertBefore(errMsg, contactForm.nextSibling);
+                setTimeout(() => errMsg.remove(), 5000);
             })
             .finally(() => {
                 if (submitBtn) submitBtn.disabled = false;
@@ -174,7 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Horizontal Scroll with Arrows Functionality
+    // Horizontal Scroll with Arrows — single shared resize listener
+    const scrollUpdateCallbacks = [];
+
     function setupHorizontalScroll(sectionId) {
         const sectionElement = document.getElementById(sectionId);
         if (!sectionElement) return;
@@ -182,15 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const wrapper = sectionElement.querySelector('.horizontal-scroll-wrapper');
         const prevArrow = sectionElement.querySelector('.prev-arrow');
         const nextArrow = sectionElement.querySelector('.next-arrow');
-        
-        if (!wrapper || !prevArrow || !nextArrow) {
-            return;
-        }
 
-        let scrollTimeout; 
+        if (!wrapper || !prevArrow || !nextArrow) return;
 
         function updateArrowStates() {
-            if (!wrapper) return; 
             const scrollLeft = wrapper.scrollLeft;
             const scrollWidth = wrapper.scrollWidth;
             const clientWidth = wrapper.clientWidth;
@@ -201,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         prevArrow.addEventListener('click', () => {
             if (wrapper.scrollLeft > 0) {
-                 wrapper.scrollBy({ left: -300, behavior: 'smooth' });
+                wrapper.scrollBy({ left: -300, behavior: 'smooth' });
             }
         });
 
@@ -211,25 +209,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        let scrollTimeout;
         wrapper.addEventListener('scroll', () => {
             clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateArrowStates, 50); 
+            scrollTimeout = setTimeout(updateArrowStates, 50);
         });
-        
-        setTimeout(updateArrowStates, 100); 
-        window.addEventListener('resize', () => {
-             clearTimeout(scrollTimeout); 
-             scrollTimeout = setTimeout(updateArrowStates, 100);
-        });
+
+        setTimeout(updateArrowStates, 100);
+        scrollUpdateCallbacks.push(updateArrowStates);
     }
 
     setupHorizontalScroll('projects');
     setupHorizontalScroll('certifications');
 
-    // Intersection Observer for animations
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => scrollUpdateCallbacks.forEach(fn => fn()), 100);
+    });
+
+    // Intersection Observer for scroll-triggered animations
     function setupIntersectionObserver() {
         const options = { root: null, rootMargin: '0px', threshold: 0.1 };
-        const observer = new IntersectionObserver((entries, obs) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('in-view');
@@ -239,17 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('section, .timeline-item').forEach(el => observer.observe(el));
     }
 
-    // Initialize Functions
-    initTheme(); 
+    initTheme();
     setupIntersectionObserver();
 
-    // Event Listeners
     window.addEventListener('scroll', () => {
         setActiveLink();
         toggleScrollToTopBtn();
     });
-    
+
     setActiveLink();
     toggleScrollToTopBtn();
-    };
 });
